@@ -125,11 +125,21 @@ def findBestTime():
 
 def findProductSoldMost():
     allData = readAllMonthData()
-    #group allnproducts together
+    #group all products together by quantity ordered
     products = allData.groupby('Product')['Quantity Ordered']
+    productsSum = products.sum()
+    #find product with highest quantity
     sortedProducts = products.sum().sort_values(ascending = False)
     bestProduct = sortedProducts.iloc[:1].to_dict()
     print(bestProduct)
+
+    productsList = [product for product, df in allData.groupby('Product')]
+    print(productsList)
+    plt.bar(productsList, productsSum)
+    plt.xticks(productsList,rotation="vertical", size=8)
+    plt.xlabel("Product")
+    plt.ylabel("Quantity Sold")
+    plt.show()
 
 if __name__ == "__main__":
     pd.set_option('display.max_columns', None)
